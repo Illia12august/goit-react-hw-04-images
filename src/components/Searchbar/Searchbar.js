@@ -19,37 +19,41 @@ const toast = Toastify({
 });
 export default class Searchbar extends Component {
   state = {
-    searchQuery: '',
+    query: '',
   };
-  onSubmit = e => {
-    e.preventDefault();
-    if (this.state.searchQuery.trim() === '') {
-      return toast.showToast();
+
+  handleSubmit = evt => {
+    evt.preventDefault();
+
+    if (this.state.query.trim() === '') {
+      toast.showToast()
+      return;
     }
+
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: '' });
   };
-  onInputChange = evt => {
+
+  handleInputChange = evt => {
     this.setState({ query: evt.target.value });
   };
 
   render() {
     return (
-      <header className="searchbar">
-        <form className="form" onSubmit={this.onSubmit}>
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
-          </button>
-
+      <div>
+        <form onSubmit={this.handleSubmit}>
           <input
-            onChange={this.onInputChange}
-            value={this.state.searchQuery}
-            className="input"
+            onChange={this.handleInputChange}
+            value={this.state.query}
             type="text"
+            name="query"
             autoComplete="off"
             autoFocus
-            placeholder="Search images and photos"
+            placeholder="Search images..."
           />
+          <button>Submit</button>
         </form>
-      </header>
+      </div>
     );
   }
 }

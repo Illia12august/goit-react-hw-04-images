@@ -1,34 +1,62 @@
 import React, { Component } from 'react';
-import Searchbar from './Searchbar/Searchbar';
-import { getGallery } from './Api';
+import Searchbar  from './Searchbar/Searchbar';
+import { Button } from './LoadMoreButton/Button';
 import { ImageGallery } from './ImgGallery/ImageGallery';
+import { getGallery } from './Api';
+import { Loader } from './Loader/Loader';
 
 export class App extends Component {
   state = {
-    searchQuery: '',
+    query: '',
     images: [],
     page: 1,
     isLoading: false,
     hasMoreImages: true,
+    showScrollBtn: false,
+  };
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.checkScrollPosition);
   }
+
   componentDidUpdate(prevProps, prevState) {
-    const { searchQuery, page } = this.state;
-    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
+    const { query, page } = this.state;
+    if (prevState.query !== query || prevState.page !== page) {
       this.loadImages();
     }
   }
-  anotherQuery = newQuery => {
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.checkScrollPosition);
+  }
+
+  changeQuery = newQuery => {
     this.setState({
-      searchQuery: `${Date.now()}/${newQuery}`,
+      query: `${Date.now()}/${newQuery}`,
       images: [],
       page: 1,
       hasMoreImages: true,
     });
   };
-  onLoadMore = () => {
+
+  handleLoadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
-  getImages = async () => {
+
+  checkScrollPosition = () => {
+    if (typeof window !== 'undefined') {
+      const offset = window.pageYOffset || 0;
+      const { showScrollBtn } = this.state;
+
+      if (offset > 1000 && !showScrollBtn) {
+        this.setState({ showScrollBtn: true });
+      } else if (offset <= 1000 && showScrollBtn) {
+        this.setState({ showScrollBtn: false });
+      }
+    }
+  };
+
+  loadImages = async () => {
     const { query, page } = this.state;
     const actualQuery = query.split('/')[1];
 
@@ -42,13 +70,19 @@ export class App extends Component {
       isLoading: false,
     }));
   };
+
   render() {
-    const { images } = this.state
+    const { images, hasMoreImages, isLoading } = this.state;
+
     return (
-      <>
-        <Searchbar></Searchbar>
+      <div>
+        <Searchbar onSubmit={this.changeQuery} />
         <ImageGallery images={images} />
-      </>
+        {images.length > 0 && hasMoreImages && (
+          <Button onClick={this.handleLoadMore} />
+        )}
+        {isLoading && <Loader />}
+      </div>
     );
   }
 }
