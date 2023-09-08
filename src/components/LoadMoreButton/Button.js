@@ -1,10 +1,12 @@
+import { StyledButtonForm } from 'components/Searchbar/Searchbar.styled';
+import { ButtonWrapper } from './Button.styled';
 
 export const Button = ({ onClick }) => {
   return (
-    <div>
-      <button onClick={onClick} type="button">
+    <ButtonWrapper>
+      <StyledButtonForm onClick={onClick} type="button">
         Load more
-      </button>
-    </div>
+      </StyledButtonForm>
+    </ButtonWrapper>
   );
 };

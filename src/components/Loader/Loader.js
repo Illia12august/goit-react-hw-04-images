@@ -1,7 +1,9 @@
+import { StyledLoader } from "./Loader.styled";
+
 export const Loader = () => {
     return (
       <div>
-        <p>Loading...</p>
+        <StyledLoader>Loading...</StyledLoader>
       </div>
     );
   };

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
+import { StyledButtonForm, StyledForm, StyledInputForm } from './Searchbar.styled';
 const toast = Toastify({
   text: 'please input text!',
   duration: 2000,
@@ -41,8 +42,8 @@ export default class Searchbar extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <input
+        <StyledForm onSubmit={this.handleSubmit}>
+          <StyledInputForm
             onChange={this.handleInputChange}
             value={this.state.query}
             type="text"
@@ -51,8 +52,8 @@ export default class Searchbar extends Component {
             autoFocus
             placeholder="Search images..."
           />
-          <button>Submit</button>
-        </form>
+          <StyledButtonForm>Submit</StyledButtonForm>
+        </StyledForm>
       </div>
     );
   }

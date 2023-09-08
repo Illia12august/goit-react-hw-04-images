@@ -15,9 +15,10 @@ const customStyles = {
     maxHeight: '80vh',
     overflow: 'hidden',
     background: 'transparent',
+    borderRadius: '30px'
   },
   overlay: {
-    backgroundColor: '#23272f',
+    backgroundColor: '#cffcf2',
   },
 };
 

@@ -1,25 +1,8 @@
 import styled from '@emotion/styled';
 
-export const StyledForm = styled.form`
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 20px;
-`;
-export const StyledInputForm = styled.input`
-margin: 20px;
-margin-right: 0;
-  padding: 20px 10px;
-  background-color: #2ee59d30;
-  width: 200px;
-  border: 1px solid #00000050;
-  border-radius: 20px;
-  max-height: 25px;
-`;
-export const StyledButtonForm = styled.button`
+export const LoadMoreBtn = styled.button`
+  margin-left: auto;
   text-decoration: none;
-  display: inline-block;
   width: 140px;
   height: 60px;
   line-height: 45px;
@@ -40,4 +23,8 @@ export const StyledButtonForm = styled.button`
     color: white;
     transform: translateY(-7px);
   }
+`;
+export const ButtonWrapper = styled.div`
+  justify-content: center;
+  display: flex;
 `;

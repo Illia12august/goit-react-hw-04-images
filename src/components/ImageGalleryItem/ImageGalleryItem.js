@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import { ImageModal } from 'components/Modal/Modal';
 
 import { ImageModal } from 'components/Modal/Modal';
+import { GalleryItem, ImageItem } from './ImageGalleryItem.styled';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -20,15 +21,15 @@ export class ImageGalleryItem extends Component {
     const { webformatURL, tags, largeImageURL } = this.props;
 
     return (
-      <li>
-        <img onClick={this.openModal} src={webformatURL} alt={tags} />
+      <GalleryItem>
+        <ImageItem onClick={this.openModal} src={webformatURL} alt={tags} />
         <ImageModal
           isOpen={this.state.isModalOpen}
           onRequestClose={this.onCloseModal}
           tags={tags}
           largeImageURL={largeImageURL}
         />
-      </li>
+      </GalleryItem>
     );
   }
 }
