@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import Toastify from 'toastify-js';
 import 'toastify-js/src/toastify.css';
 import { StyledButtonForm, StyledForm, StyledInputForm } from './Searchbar.styled';
@@ -18,34 +18,31 @@ const toast = Toastify({
     y: 10, // vertical axis - can be a number or a string indicating unity. eg: '2em'
   },
 });
-export default class Searchbar extends Component {
-  state = {
-    query: '',
-  };
+export const Searchbar = ({ onSubmit }) => {
+  const [query, setQuery] = useState('');
 
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
 
-    if (this.state.query.trim() === '') {
+    if (query.trim() === '') {
       toast.showToast()
-      return;
+      return
     }
 
-    this.props.onSubmit(this.state.query);
-    this.setState({ query: '' });
+    onSubmit(query);
+    setQuery('');
   };
 
-  handleInputChange = evt => {
-    this.setState({ query: evt.target.value });
+  const handleInputChange = evt => {
+    setQuery(evt.target.value);
   };
 
-  render() {
     return (
       <div>
-        <StyledForm onSubmit={this.handleSubmit}>
+        <StyledForm onSubmit={handleSubmit}>
           <StyledInputForm
-            onChange={this.handleInputChange}
-            value={this.state.query}
+            onChange={handleInputChange}
+            value={query}
             type="text"
             name="query"
             autoComplete="off"
@@ -56,5 +53,4 @@ export default class Searchbar extends Component {
         </StyledForm>
       </div>
     );
-  }
 }

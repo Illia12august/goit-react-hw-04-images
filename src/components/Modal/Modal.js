@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { Loader } from 'components/Loader/Loader';
 
@@ -15,7 +15,7 @@ const customStyles = {
     maxHeight: '80vh',
     overflow: 'hidden',
     background: 'transparent',
-    borderRadius: '30px'
+    borderRadius: '30px',
   },
   overlay: {
     backgroundColor: '#cffcf2',
@@ -24,52 +24,39 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-export class ImageModal extends Component {
-  state = {
-    imageLoaded: false,
-  };
+export const ImageModal = ({ isOpen, onRequestClose, tags, largeImageURL }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
 
-  handleImageLoad = () => {
-    this.setState({ imageLoaded: true });
-  };
-
-  componentDidUpdate(prevProps) {
-    if (this.props.isOpen && !prevProps.isOpen) {
+  useEffect(() => {
+    if (isOpen) {
       document.body.style.overflow = 'hidden';
-    } else if (!this.props.isOpen && prevProps.isOpen) {
+    } else {
       document.body.style.overflow = 'auto';
     }
-  }
 
-  componentWillUnmount() {
-    document.body.style.overflow = 'auto';
-  }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
 
-  render() {
-    const { isOpen, onRequestClose, tags, largeImageURL } = this.props;
-
-    return (
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={onRequestClose}
-        style={customStyles}
-        contentLabel="Image Modal"
-      >
-        <img
-          src={largeImageURL}
-          alt={tags}
-          onLoad={this.handleImageLoad}
-        />
-        {!this.state.imageLoaded && <Loader />}
-        {this.state.imageLoaded && (
-          <div>
-            <p>{tags}</p>
-            <button onClick={onRequestClose}>
-              close
-            </button>
-          </div>
-        )}
-      </Modal>
-    );
-  }
-}
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+  return (
+    <Modal
+    styles={customStyles}
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Image Modal"
+    >
+      <img src={largeImageURL} alt={tags} onLoad={handleImageLoad} />
+      {!imageLoaded && <Loader />}
+      {imageLoaded && (
+        <div>
+          <p>{tags}</p>
+          <button onClick={onRequestClose}>close</button>
+        </div>
+      )}
+    </Modal>
+  );
+};
